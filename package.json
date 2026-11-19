@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/vinc3661/mini-backend-property-management-system#readme",
   "dependencies": {
-    "express": "^5.3.0"
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
   }
 }
