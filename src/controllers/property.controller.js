@@ -57,3 +57,68 @@ const getProperty=async(req,res)=>{
         console.error("failed to get property");
     }
 }
+
+const getPropertiesId=async(req,res)=>{
+
+try{
+
+const{property_name,address}=req.body;
+if(!property_name||address){
+    return res.status(400).json(
+        {
+            success:false,
+            message:"property_name and address required"
+        }
+    );
+}
+    const property=await propertyService.getPropertiesId(
+        {
+            property_name,
+            address
+        }
+    );
+
+    return res.status(201).json(
+        {
+            success:true,
+            message:"property deletd",
+            data:proprty
+        }
+    );
+
+}catch(error){
+    console.error("failed to delete property");
+
+}
+
+
+
+
+}
+
+
+const updateProperty=async(req,res)=>{
+    try{
+        const{property_name,address}=req.body;
+        if(!property_name||!address){
+            return res.status(400).json({
+                success:false,
+                message:"property_name,address required"
+            });
+
+    }
+
+    const property=await propertyService.updateProperty({
+        property_name,
+        address
+    });
+
+    return res.status(400).json({
+        success:true,
+        message:"property update successfull",
+        data:property
+    });
+}catch(error){
+    console.error("failed to update property");
+    }
+}
