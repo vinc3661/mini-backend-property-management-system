@@ -1,7 +1,7 @@
 
 const propertyService = require("../services/property.service");
 
-// 1. CREATE PROPERTY
+
 const createProperty = async (req, res, next) => {
     try {
         const { property_name, address } = req.body;
@@ -31,7 +31,7 @@ const createProperty = async (req, res, next) => {
 };
 
 
-// 2. GET ALL PROPERTIES
+
 const getProperties = async (req, res, next) => {
     try {
         const landlordId = req.user.id;
@@ -50,7 +50,7 @@ const getProperties = async (req, res, next) => {
 };
 
 
-// 3. GET PROPERTY BY ID
+
 const getPropertyById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -80,7 +80,7 @@ const getPropertyById = async (req, res, next) => {
 };
 
 
-// 4. UPDATE PROPERTY
+
 const updateProperty = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -123,7 +123,7 @@ const updateProperty = async (req, res, next) => {
 };
 
 
-// 5. DELETE PROPERTY
+
 const deleteProperty = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -153,7 +153,6 @@ const deleteProperty = async (req, res, next) => {
 };
 
 
-// EXPORT CONTROLLERS
 module.exports = {
     createProperty,
     getProperties,
