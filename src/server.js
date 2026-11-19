@@ -1,4 +1,6 @@
 const app=require("./app");
-app.listen(4000, ()=>{
-    console.log("server is running");
+const PORT=4000;
+app.listen(PORT ,()=>{
+
+    console.log(`server is running at port ${PORT}`)
 });

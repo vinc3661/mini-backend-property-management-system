@@ -1,6 +1,39 @@
 const express=require("express");
 const router=express.Router();
-const {createProperty, getProperty}=require("../controllers/property.controller");
+
+const {
+    getProperties,
+    getPropertiesId,
+    updateProperty,
+    deletePropery,
+    createProperty,
+}=require("../controllers/property.controller");
+
 router.post("/",createProperty);
-router.get("/",getProperty);
-module.exports=router;
+router.get("/",getProperties);
+router.get("/:id",getPropertiesId);
+router.patch("/:id",updateProperty);
+router.delete("/:id",deletePropery);
+
+
+exports.module=router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.module=router
