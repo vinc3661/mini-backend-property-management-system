@@ -31,7 +31,7 @@ return results.row[0];
 }
 
 const getProperties=async(
-    {landlordID}
+    {landlordId}
 )=>{
 
 const query=` 
@@ -40,8 +40,78 @@ FROM properties
 WHERE landlord_id=$1
 `;
 
-const values=[lanlordId];
+const values=[landlordId];
 const results=await pool.query(query,values);
 return results.rows
 
-}
+};
+
+
+const getPropertyById=async({
+    id,
+    landlordId
+})=>{
+
+const query=`
+SELECT *
+FROM properties
+WHERE lanlord_id=$1
+WHERE id=$1
+`;
+
+const values=[landlordId,id];
+const results=await pool.query(query,values);
+return results.rows;
+
+};
+
+
+const updateProperty=async({
+    property_name,
+    address,
+    landlordId,
+    id
+})=>{
+
+const query=`
+SELECT *
+FROM properties
+WHERE property_name=$1,
+address=$2,
+landlord_id=$3
+id=$4
+`;
+const values=[property_name,address,landlordId,id]
+
+const results=await pool.query(query,values);
+return results.row;
+    
+};
+
+
+
+const deleteProperty=async(
+    {
+        id
+    }
+)=>{
+
+const query=`
+SELECT *
+FROM properties
+WHERE id=$1
+`;
+
+const values=[id];
+const results=pool.query(query,values);
+return results.row;
+
+};
+
+exports.module={
+    createProperty,
+    getPropertyById,
+    deleteProperty,
+    getProperties,
+    updateProperty,
+};
