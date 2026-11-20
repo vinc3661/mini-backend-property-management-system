@@ -24,17 +24,24 @@ const values=[
     lanlordId
 ];
 
-const results=pool.query(query,values);
+const results=await pool.query(query,values);
 
 return results.row[0];
 
+}
 
+const getProperties=async(
+    {landlordID}
+)=>{
 
+const query=` 
+SELECT*
+FROM properties
+WHERE landlord_id=$1
+`;
 
-
-
-
-
-
+const values=[lanlordId];
+const results=await pool.query(query,values);
+return results.rows
 
 }
