@@ -1,4 +1,4 @@
-const tenatService=require("../service/tenant.service");
+const tenantService=require("../service/tenant.service");
 
 const createTenant=async(req,res,next)=>{
 try{
@@ -11,7 +11,7 @@ if(!tenant_name||!email){
     });
 }
 
-const tenant=await tenatService.createTenant(landlordId);
+const tenant=await tenantService.createTenant(landlordId);
 return res.status(201).json({
     success:true,
     message:"tenant created",
@@ -21,7 +21,7 @@ return res.status(201).json({
 }catch(error){
     next(error);
 }
-
+}
 const getTenants=async(req,res,next)=>{
 
 try{
@@ -52,7 +52,7 @@ if(!tenant_name,email){
 
 
 
-};
+
 
 const getTenantById=async(req,res,next)=>{
 try{
@@ -70,7 +70,7 @@ if(!tenant_name||!email){
     
 }
 
-    const tenant=await tenatService.getTenantById(id,landlord);
+    const tenant=await tenantService.getTenantById(id,landlord);
 return res.status(200).json({
     success:true,
     message:"retreived tenant",
@@ -138,4 +138,14 @@ data:tenant
 
 
 
+}
+
+
+
+exports.modules={
+    createTenant,
+    getTenantById,
+    getTenants,
+    updateTenant,
+    deleteTenant
 }
