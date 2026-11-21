@@ -15,36 +15,43 @@ const verifyPassword = async (password, storedHash) => {
 };
 
 
-const registerUser=async ({full_name,email,password})=>{
+const registerUser = async ({ full_name, email, password }) => {
 
-const query=`
-INSERT INTO users(
-full_name,
-email,
-password,
-created_at
-)
-VALUES($1,$2,$3,$4)
-RETURNING id,full_name.role,created_at,email;
-`;
-const normalizedEmail = email.trim().toLowerCase();
-const passwordHash = await hashPassword(password);
-const values=[
-   full_name,
-   normalizedEmail,
-   password,
-    passwordHash,
     
-];
+    const normalizedEmail = email.trim().toLowerCase();
 
-const results=await pool.query(query,values);
-return results.rows[0];
+    
+    const passwordHash = await hashPassword(password);
 
-}
+    
+    const query = `
+        INSERT INTO users (
+            full_name,
+            email,
+            password_hash,
+            role
+        )
+        VALUES ($1, $2, $3, $4)
+        RETURNING id, full_name, email, role, created_at;
+    `;
 
+    
+    const values = [
+        full_name,
+        normalizedEmail,
+        passwordHash,
+        "landlord"
+    ];
+
+    
+    const results = await pool.query(query, values);
+
+    
+    return results.rows[0];
+};
 
 module.exports = {
     hashPassword,
     verifyPassword,
-    registerUser,
+    registerUser
 };
