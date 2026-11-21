@@ -21,14 +21,17 @@ const query=`
 INSERT INTO users(
 $1,
 $2,
-$password
+$3
 )
-RETURNINGS *
+RETURNINGS id,full_name.role,created_at,email;
 `;
+const passwordHash = await hashPassword(password);
 const values=[
     full_name,
     email,
-    password
+    password,
+    
+    passwordHash
 ];
 
 const results=await pool.query(query,values);
