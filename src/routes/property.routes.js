@@ -16,7 +16,7 @@ router.patch("/:id",updateProperty);
 router.delete("/:id",deletePropery);
 
 
-exports.module=router;
+module.exports=router;
 
 
 
