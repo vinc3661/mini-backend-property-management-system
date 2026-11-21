@@ -19,19 +19,22 @@ const registerUser=async ({full_name,email,password})=>{
 
 const query=`
 INSERT INTO users(
-$1,
-$2,
-$3
+full_name,
+email,
+password,
+created_at
 )
-RETURNINGS id,full_name.role,created_at,email;
+VALUES($1,$2,$3,$4)
+RETURNING id,full_name.role,created_at,email;
 `;
+const normalizedEmail = email.trim().toLowerCase();
 const passwordHash = await hashPassword(password);
 const values=[
-    full_name,
-    email,
-    password,
+   full_name,
+   normalizedEmail,
+   password,
+    passwordHash,
     
-    passwordHash
 ];
 
 const results=await pool.query(query,values);
