@@ -1,117 +1,122 @@
-const pool=require("../config/db");
 
-const createProperty=async(
-    {
+const pool = require("../config/db");
+
+
+const createProperty = async ({
+    property_name,
+    address,
+    landlord_id
+}) => {
+
+    const query = `
+        INSERT INTO properties (
+            property_name,
+            address,
+            landlord_id
+        )
+        VALUES ($1, $2, $3)
+        RETURNING *;
+    `;
+
+    const values = [
         property_name,
         address,
-        lanlordId
-    }
-)=>{
+        landlord_id
+    ];
 
+    const results = await pool.query(query, values);
 
-const query=`
-INSERT INTO properties(
-property_name,
-address,
-lanlordId)
-VALUES($1,$2,$3)
-RETURNING *
-`;
+    return results.rows[0];
+};
 
-const values=[
-    property_name,
-    address,
-    lanlordId
-];
+const getProperties = async (landlordId) => {
 
-const results=await pool.query(query,values);
+    const query = `
+        SELECT *
+        FROM properties
+        WHERE landlord_id = $1;
+    `;
 
-return results.row[0];
+    const values = [landlordId];
 
-}
+    const results = await pool.query(query, values);
 
-const getProperties=async(
-    {landlordId}
-)=>{
-
-const query=` 
-SELECT*
-FROM properties
-WHERE landlord_id=$1
-`;
-
-const values=[landlordId];
-const results=await pool.query(query,values);
-return results.rows
-
+    return results.rows;
 };
 
 
-const getPropertyById=async({
+
+const getPropertyById = async (id, landlordId) => {
+
+    const query = `
+        SELECT *
+        FROM properties
+        WHERE id = $1
+        AND landlord_id = $2;
+    `;
+
+    const values = [id, landlordId];
+
+    const results = await pool.query(query, values);
+
+    return results.rows[0];
+};
+
+
+const updateProperty = async ({
     id,
-    landlordId
-})=>{
-
-const query=`
-SELECT *
-FROM properties
-WHERE lanlord_id=$1
-WHERE id=$1
-`;
-
-const values=[landlordId,id];
-const results=await pool.query(query,values);
-return results.rows;
-
-};
-
-
-const updateProperty=async({
-    property_name,
-    address,
     landlordId,
-    id
-})=>{
+    property_name,
+    address
+}) => {
 
-const query=`
-SELECT *
-FROM properties
-WHERE property_name=$1,
-address=$2,
-landlord_id=$3
-id=$4
-`;
-const values=[property_name,address,landlordId,id]
+    const query = `
+        UPDATE properties
+        SET
+            property_name = COALESCE($1, property_name),
+            address = COALESCE($2, address),
+            updated_at = NOW()
+        WHERE id = $3
+        AND landlord_id = $4
+        RETURNING *;
+    `;
 
-const results=await pool.query(query,values);
-return results.row;
-    
+    const values = [
+        property_name ?? null,
+        address ?? null,
+        id,
+        landlordId
+    ];
+
+    const results = await pool.query(query, values);
+
+    return results.rows[0];
 };
 
 
 
-const deleteProperty=async(
-    {
-        id
-    }
-)=>{
+const deleteProperty = async (id, landlordId) => {
 
-const query=`
-SELECT *
-FROM properties
-WHERE id=$1
-`;
+    const query = `
+        DELETE FROM properties
+        WHERE id = $1
+        AND landlord_id = $2
+        RETURNING *;
+    `;
 
-const values=[id];
-const results=pool.query(query,values);
-return results.row;
+    const values = [id, landlordId];
 
+    const results = await pool.query(query, values);
+
+    return results.rows[0];
 };
 
-exports.module={
+
+
+module.exports = {
     createProperty,
-    getPropertyById,
-    deleteProperty,
     getProperties,
+    getPropertyById,
     updateProperty,
+    deleteProperty
 };
