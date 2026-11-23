@@ -19,4 +19,5 @@ export interface UpdateTenantInput {
   tenant_name?: string;
   email?: string;
   property_id?: string;
+  landlord_id?:string;
 }
