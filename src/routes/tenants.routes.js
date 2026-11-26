@@ -1,13 +1,10 @@
-const express=require("express");
+import express from "express";
+import { createTenant,updateTenant,getTenants } from "../controller/tenant.controller";
+
 const router=express.Router();
 
-const {createTenant,getTenants,getTenantsById,updateTenant,deleteTenant}=
-require("../controllers/tenant.controller");
-
 router.post("/",createTenant);
-router.get("/",getTenantsById);
 router.get("/",getTenants);
-router.patch("/",updateTenant);
-router.delete("/",deleteTenant);
+router.patch("/:id",updateTenant);
 
-exports.modules=router;
+export default router;
