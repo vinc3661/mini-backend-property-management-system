@@ -1,0 +1,36 @@
+CREATE TABLE payments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    phone_number VARCHAR(20) NOT NULL,
+
+    amount NUMERIC(12, 2) NOT NULL,
+
+    student_id UUID NOT NULL,
+
+    payment_status VARCHAR(20) NOT NULL DEFAULT 'pending',
+
+    provider_reference VARCHAR(100),
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CHECK (amount > 0),
+
+    CHECK (payment_status IN (
+        'paid',
+        'pending',
+        'failed',
+        'cancelled'
+    ))
+);
+
+CREATE INDEX students_id_idx
+ON payments(students_id);
+
+CREATE UNIQUE INDEX payments_provider_reference_unique_idx
+ON payments (provider_reference)
+WHERE provider_reference IS NOT NULL;
+
+ALTER TABLE payments
+CRAETE CONSTRAINT fk_students_id_fk
+FOREIGN KEY (students_id)
+REFERENCES student(id)

@@ -1,0 +1,14 @@
+
+CREATE TABLE students (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    full_name VARCHAR(150) NOT NULL,
+
+    school_fees_status VARCHAR(20) NOT NULL DEFAULT 'pending',
+
+    CHECK (school_fees_status IN (
+        'pending',
+        'paid'
+    ))
+);
+

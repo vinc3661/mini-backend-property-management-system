@@ -67,7 +67,7 @@ data:tenant
 }
 
 export  async function updateTenant(req:Request,res:Response,next:NextFunction){
-
+try{
 const {tenant_name,email,property_id}=req.body;
 if(!tenant_name||!email||!property_id){
     return res.status(400).json({
@@ -98,6 +98,8 @@ return res.status(200).json({
     message:"tenant updated",
     data:tenant
 });
-
+}catch(error){
+    next(error);
+}
 
 }
